@@ -99,10 +99,9 @@ export class AuthService {
 
   async login(user: User, remember: boolean = false): Promise<AuthSuccessDto> {
     const payload = { remember, userId: user.id }
-    const claims = await this.getHasuraClaims(user.id)
 
     return {
-      access_token: this.getAccessToken({ ...payload, ...claims }),
+      access_token: this.getAccessToken({ ...payload }),
       refresh_token: this.getRefreshToken(
         { ...payload, incrementId: 1 },
         remember,
@@ -115,10 +114,9 @@ export class AuthService {
     remember: boolean = false,
   ): Promise<AuthSuccessDto> {
     const payload = { remember, userId: user.id }
-    const claims = await this.getHasuraClaims(user.id)
 
     return {
-      access_token: this.getAccessToken({ ...payload, ...claims }),
+      access_token: this.getAccessToken({ ...payload }),
       refresh_token: this.getRefreshToken(
         { ...payload, incrementId: 1 },
         remember,
@@ -131,10 +129,9 @@ export class AuthService {
     remember: boolean = false,
   ): Promise<AuthSuccessDto> {
     const payload = { remember, userId: user.id }
-    const claims = await this.getHasuraClaims(user.id)
 
     return {
-      access_token: this.getAccessToken({ ...payload, ...claims }),
+      access_token: this.getAccessToken({ ...payload }),
       refresh_token: this.getRefreshToken(
         { ...payload, incrementId: 1 },
         remember,
@@ -172,15 +169,5 @@ export class AuthService {
       expiresIn,
       secret: this.configService.get('auth.refreshTokenSecret'),
     })
-  }
-
-  getHasuraClaims = async (userId: string) => {
-    return {
-      'https://hasura.io/jwt/claims': {
-        'X-Hasura-Allowed-Roles': ['anonymous', 'user'],
-        'X-Hasura-Default-Role': 'user',
-        'X-Hasura-User-Id': userId,
-      },
-    }
   }
 }
